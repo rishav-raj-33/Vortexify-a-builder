@@ -104,14 +104,15 @@ Vortexify/
 ├── Brain_Module/          # Spring Boot backend
 ├── Skin_Module/           # Laravel frontend
 ├── Resource/
-│   ├── System Design/         # System Design Diagrams
-│   ├── Research/              # Skill mapping, difficulty analysis
-│   └── ER Digram/             # ER Digram of Entity
-│   ├── System Documentation/  # System Documentation
-│   ├── Road Map/              # Estimated Planning to complete this project
-│   ├── SRS/                   # Vortexify SRS
-├── README.md
-├── LICENSE.md
+│   ├── System Design/              # System Design Diagrams
+│   ├── Research/                   # Skill mapping, difficulty analysis
+│   └── ER Digram/                  # ER Digram of Entity
+│   ├── System Documentation/       # System Documentation
+│   ├── Road Map/                   # Estimated Planning to complete this project               
+│   ├── SRS/                        # Vortexify SRS
+├── README.md                       # Read me
+├── LICENSE.md                      # LICENSE
+├── ChatGPT_Approved_Preparation.md # Flex 😅
 
 ## 🧰 Technologies Used
 
