@@ -1,5 +1,5 @@
 # ⚙️ Vortexify: A Builder 
-“From Code to Container – Vortexify builds it all.”
+"From code to container — Vortexify spins it, builds it, lives it."
 
 > 🚀 One-click GitHub-to-Docker Deployment System on VMware  
 > A modular DevOps tool built with ❤️, 🧠, and 🧑‍🎨
