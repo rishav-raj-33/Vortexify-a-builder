@@ -111,6 +111,7 @@ Vortexify/
 │   ├── Road Map/              # Estimated Planning to complete this project
 │   ├── SRS/                   # Vortexify SRS
 ├── README.md
+├── LICENSE.md
 
 ## 🧰 Technologies Used
 
