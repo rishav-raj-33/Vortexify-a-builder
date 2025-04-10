@@ -100,9 +100,9 @@ See full system architecture and SRS with Other Info at Resouce Directory*
 
 Vortexify/
 │
-├── Heart_Module/          # Python scripts for automation
-├── Brain_Module/          # Spring Boot backend
-├── Skin_Module/           # Laravel frontend
+├── Heart_Module/          # Python scripts for automation <-- from heart-module branch (after merge)
+├── Brain_Module/          # Spring Boot backend  <-- from brain-module branch (after merge)
+├── Skin_Module/           # Laravel frontend  <-- from skin-module branch (after merge)
 ├── Resource/
 │   ├── System Design/              # System Design Diagrams
 │   ├── Research/                   # Skill mapping, difficulty analysis
@@ -113,7 +113,7 @@ Vortexify/
 ├── README.md                       # Read me
 ├── LICENSE.md                      # LICENSE
 ├── ChatGPT_Approved_Preparation.md # Flex 😅
-
+├── Vortexify_Branching.md          #contains Branching strategy
 ## 🧰 Technologies Used
 
 - **Frontend (Skin)**: `Laravel`, `Blade`, `Bootstrap`, `HTML`, `CSS`, `JS`
