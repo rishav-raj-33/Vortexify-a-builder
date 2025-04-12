@@ -2,15 +2,17 @@ package com.vortexify.brain.service;
 
 import java.io.IOException;
 
-import jakarta.websocket.DeploymentException;
+import com.vortexify.brain.exception.DeploymentFailedException;
+
+
 
 public interface TriggerService {
 	
-	 boolean cloneRepo(String url) throws DeploymentException ,IOException, InterruptedException;
+	 boolean cloneRepo(String url) throws DeploymentFailedException ,IOException, InterruptedException;
 	 
-	 boolean buildDockerImage(String path) throws DeploymentException ,IOException, InterruptedException;
+	 boolean buildDockerImage(String path) throws DeploymentFailedException ,IOException, InterruptedException;
 	 
-	 boolean deployDockerImage(String hostName)throws DeploymentException ,IOException, InterruptedException;  
+	 boolean deployDockerImage(String hostName)throws DeploymentFailedException ,IOException, InterruptedException;  
 	 
 	 
 	 

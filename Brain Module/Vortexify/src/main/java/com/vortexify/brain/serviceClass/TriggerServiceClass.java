@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.vortexify.brain.exception.DeploymentFailedException;
 import com.vortexify.brain.service.TriggerService;
-import jakarta.websocket.DeploymentException;
+
 
 
 
@@ -17,7 +19,7 @@ public class TriggerServiceClass implements TriggerService {
 	private Logger log=LoggerFactory.getLogger(TriggerServiceClass.class);
 
 	@Override
-	public boolean cloneRepo(String url) throws DeploymentException ,IOException, InterruptedException {
+	public boolean cloneRepo(String url) throws DeploymentFailedException ,IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
 		String pythonScriptPath = "scripts/?.py"; 
@@ -54,7 +56,7 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Clone Repo script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-	            	throw new DeploymentException(errorOutput.toString());
+	            	throw new DeploymentFailedException(errorOutput.toString());
 	            }
 
 	        
@@ -63,7 +65,7 @@ public class TriggerServiceClass implements TriggerService {
 	}
 
 	@Override
-	public boolean buildDockerImage(String path) throws DeploymentException, IOException, InterruptedException {
+	public boolean buildDockerImage(String path) throws DeploymentFailedException, IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
 		String pythonScriptPath = "scripts/?.py"; 
@@ -100,12 +102,12 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Build Docker Image script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-	            	throw new DeploymentException(errorOutput.toString());
+	            	throw new DeploymentFailedException(errorOutput.toString());
 	            }
 	}
 
 	@Override
-	public boolean deployDockerImage(String hostName) throws DeploymentException, IOException, InterruptedException {
+	public boolean deployDockerImage(String hostName) throws DeploymentFailedException, IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
 		String pythonScriptPath = "scripts/?.py"; 
@@ -142,7 +144,7 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Deploy script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-	            	throw new DeploymentException(errorOutput.toString());
+	            	throw new DeploymentFailedException(errorOutput.toString());
 	            }
 	}
 
