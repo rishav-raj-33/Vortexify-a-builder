@@ -173,10 +173,11 @@ Vortexify/
 
 ## 👨‍💻 Contributors
 
-| Name           | Role            |
-|----------------|-----------------|
-| Rishav Raj (🔥)| Full Stack Dev  |
-| Your Future 👥 | Open for collab |
+| Name           | Module Role       |
+|----------------|-------------------|
+| Rishav Raj (🔥)| Heart,Brain,Skin |
+| Swayam (🔥)    | Heart            |
+| Your Future 👥 | Open for collab  |
 
 ---
 
