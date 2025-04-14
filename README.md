@@ -173,7 +173,7 @@ Vortexify/
 
 ## 👨‍💻 Contributors
 
-| Name           | Module Role       |
+| Name           | Module            |
 |----------------|-------------------|
 | Rishav Raj (🔥)| Heart,Brain,Skin |
 | Swayam (🔥)    | Heart            |
