@@ -9,28 +9,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.vortexify.brain.payloads.DeploymentResponseFailed;
+import com.vortexify.brain.payloads.DeploymentFailedResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
 	
 	@ExceptionHandler(DeploymentFailedException.class)
-	public ResponseEntity<DeploymentResponseFailed> deployFailed(DeploymentFailedException e){	
-		return new ResponseEntity<>(new DeploymentResponseFailed("Reason: "+e.getMessage(), false),HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<DeploymentFailedResponse> deployFailed(DeploymentFailedException e){	
+		return new ResponseEntity<>(new DeploymentFailedResponse("Reason: "+e.getMessage(), false),HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
 	
 	
 	@ExceptionHandler(IOException.class)
-	public ResponseEntity<DeploymentResponseFailed> ioException(IOException e){	
-		return new ResponseEntity<>(new DeploymentResponseFailed("Reason: "+e.getMessage(), false),HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<DeploymentFailedResponse> ioException(IOException e){	
+		return new ResponseEntity<>(new DeploymentFailedResponse("Reason: "+e.getMessage(), false),HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
 	
 	
 	@ExceptionHandler(InterruptedException.class)
-	public ResponseEntity<DeploymentResponseFailed> interruptedException(InterruptedException e){	
-		return new ResponseEntity<>(new DeploymentResponseFailed("Reason: "+e.getMessage(), false),HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<DeploymentFailedResponse> interruptedException(InterruptedException e){	
+		return new ResponseEntity<>(new DeploymentFailedResponse("Reason: "+e.getMessage(), false),HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
