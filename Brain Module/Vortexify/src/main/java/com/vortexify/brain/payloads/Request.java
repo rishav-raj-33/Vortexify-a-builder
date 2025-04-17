@@ -1,20 +1,20 @@
 package com.vortexify.brain.payloads;
 
-public class DeployRequest {
+public class Request {
 	
 	
 	
-	private String repoUrl;
+	private String url;
 	
 	private Long userId;
 	
 	
 	//-------------------------------------
-	public String getRepoUrl() {
-		return repoUrl;
+	public String getUrl() {
+		return url;
 	}
-	public void setRepoUrl(String repoUrl) {
-		this.repoUrl = repoUrl;
+	public void setRepoUrl(String url) {
+		this.url = url;
 	}
 	public Long getUserId() {
 		return userId;

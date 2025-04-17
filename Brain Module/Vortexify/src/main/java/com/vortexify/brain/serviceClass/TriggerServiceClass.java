@@ -3,13 +3,18 @@ package com.vortexify.brain.serviceClass;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vortexify.brain.config.AppConstants;
+import com.vortexify.brain.entity.Deployment;
 import com.vortexify.brain.exception.DeploymentFailedException;
+import com.vortexify.brain.service.EntityService;
 import com.vortexify.brain.service.TriggerService;
 
 
@@ -18,6 +23,9 @@ import com.vortexify.brain.service.TriggerService;
 public class TriggerServiceClass implements TriggerService {
 	
 	private Logger log=LoggerFactory.getLogger(TriggerServiceClass.class);
+	
+	@Autowired
+	private EntityService entityService;
 
 	@Override
 	public boolean cloneRepo(String url) throws DeploymentFailedException ,IOException, InterruptedException {
@@ -108,7 +116,7 @@ public class TriggerServiceClass implements TriggerService {
 	}
 
 	@Override
-	public boolean deployDockerImage(String hostName) throws DeploymentFailedException, IOException, InterruptedException {
+	public boolean deployDockerImage(String hostName,Long userId) throws DeploymentFailedException, IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
 		String pythonScriptPath = "scripts/?.py"; 
@@ -137,14 +145,34 @@ public class TriggerServiceClass implements TriggerService {
 	                    output.append(line).append("\n");
 	                }   
 	            }
+	            
+	            Deployment deploymentInfoDeployment=new Deployment();
 
 	            // Wait for the process to finish
 	            int exitCode = process.waitFor();
 	            if (exitCode == 0) {
 	            	log.info("Deploy script script excuted....");
+	            	
+	            	
+	            	deploymentInfoDeployment.setContainerIp("?");  //set container id
+	            	deploymentInfoDeployment.setContainerPort("?");  //set container port
+	            	deploymentInfoDeployment.setLiveUrl("?");   //set live url
+	            	deploymentInfoDeployment.setStatus(AppConstants.DEPLOYMENTSTATUS.SUCCESS.toString());
+	            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
+	            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
+	            	deploymentInfoDeployment.setUserId(userId);
+	            	entityService.storeInfo(deploymentInfoDeployment);
 	                return true;  
 	            } else {
 	            	 log.error("Deploy script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
+		            	deploymentInfoDeployment.setContainerIp(null);  //set container id
+		            	deploymentInfoDeployment.setContainerPort(null);  //set container port
+		            	deploymentInfoDeployment.setLiveUrl(null);   //set live url
+		            	deploymentInfoDeployment.setStatus(AppConstants.DEPLOYMENTSTATUS.FAILED.toString());
+		            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
+		            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
+		            	deploymentInfoDeployment.setUserId(userId);
+		            	entityService.storeInfo(deploymentInfoDeployment);
 	            	throw new DeploymentFailedException(errorOutput.toString());
 	            }
 	}

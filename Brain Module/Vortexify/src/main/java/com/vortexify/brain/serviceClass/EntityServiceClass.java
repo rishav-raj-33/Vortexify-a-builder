@@ -5,8 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.vortexify.brain.entity.Deployment;
+import com.vortexify.brain.payloads.Request;
 import com.vortexify.brain.payloads.DeploymentSuccessResponse;
-import com.vortexify.brain.payloads.StopRequest;
 import com.vortexify.brain.repo.DeployRepo;
 import com.vortexify.brain.service.EntityService;
 
@@ -27,16 +27,16 @@ public class EntityServiceClass implements EntityService {
 	}
 
 	@Override
-	public boolean deleteInfo(StopRequest stopRequest) {
-		Deployment deployment=deployRepo.findByLiveUrl(stopRequest.getLiveUrl());
-		deployRepo.delete(deployment);
+	public boolean deleteInfo(Request stopRequest) {
+		List<Deployment> deployment=deployRepo.findfindByUserId(stopRequest.getUserId());
+		deployRepo.deleteAll(deployment);
 		return true;
 	}
 
 	//pending.....
 	
 	@Override
-	public boolean updateInfo(Deployment deployment, StopRequest request) {
+	public boolean updateInfo(Deployment deployment, Request request) {
 		//Deployment getDeployment=deployRepo.findByLiveUrl(request.getLiveUrl());
 		
 		
@@ -50,7 +50,7 @@ public class EntityServiceClass implements EntityService {
 	//Pagination Pending...
 	
 	@Override
-	public List<DeploymentSuccessResponse> getDeploymentInfo(String userId) {
+	public List<DeploymentSuccessResponse> getDeploymentInfo(Long userId) {
 		
 		List<Deployment> list=deployRepo.findfindByUserId(userId);
 		List<DeploymentSuccessResponse> list2=list.stream().map((obj)->modelMapper.map(obj, DeploymentSuccessResponse.class)).toList();
@@ -58,9 +58,9 @@ public class EntityServiceClass implements EntityService {
 	}
 
 	@Override
-	public DeploymentSuccessResponse getDeployInfo(StopRequest request) {
+	public DeploymentSuccessResponse getDeployInfo(Request request) {
 		
-		Deployment getDeploymentInfo=deployRepo.findByLiveUrl(request.getLiveUrl());
+		Deployment getDeploymentInfo=deployRepo.findByLiveUrl(request.getUrl());
 		
 		DeploymentSuccessResponse response=new DeploymentSuccessResponse();
 		response.setUserId(getDeploymentInfo.getUserId());
