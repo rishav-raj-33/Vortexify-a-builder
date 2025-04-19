@@ -1,1 +1,0 @@
-# this is sample script needs to be deleted
