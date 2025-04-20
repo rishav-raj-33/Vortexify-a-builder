@@ -4,10 +4,19 @@ import subprocess
 import paramiko
 from scp import SCPClient
 
+def delete_tar_from_vm(ssh, username, image_name):
+    remote_tar_path = f"/home/{username}/{image_name}.tar"
+    print(f"[Info] Deleting TAR file from VM: {remote_tar_path}")
+    stdin, stdout, stderr = ssh.exec_command(f"rm -f {remote_tar_path}")
+    err = stderr.read().decode().strip()
+    if err:
+        print(f"[VM Error] Failed to delete TAR file: {err}")
+    else:
+        print(f"[✓] TAR file deleted from VM.")
+
 def send_to_vm_and_run(tar_file_path, image_name, vm_info):
     host, port, username, password = vm_info['host'], vm_info['port'], vm_info['username'], vm_info['password']
 
-    # Ensure tar file exists
     if not os.path.isfile(tar_file_path):
         print(f"[Error] The tar file does not exist: {tar_file_path}")
         sys.exit(1)
@@ -17,12 +26,10 @@ def send_to_vm_and_run(tar_file_path, image_name, vm_info):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(host, port=port, username=username, password=password)
 
-    # SCP the tar file to the VM
     print(f"[Info] Sending Docker image to VM...")
     with SCPClient(ssh.get_transport()) as scp:
         scp.put(tar_file_path, remote_path=f"/home/{username}/{image_name}.tar")
 
-    # Load the Docker image on the VM
     print(f"[Info] Loading Docker image on VM...")
     stdin, stdout, stderr = ssh.exec_command(f"docker load -i /home/{username}/{image_name}.tar")
     out = stdout.read().decode().strip()
@@ -31,10 +38,11 @@ def send_to_vm_and_run(tar_file_path, image_name, vm_info):
         print(f"[VM Error] {err}")
         ssh.close()
         sys.exit(1)
-
     print(f"[VM Output] {out}")
 
-    # Get available port from custom script
+    # 🧹 Delete TAR file after successful load
+    delete_tar_from_vm(ssh, username, image_name)
+
     print(f"[Info] Fetching available port from VM...")
     stdin, stdout, stderr = ssh.exec_command("portFinder")
     available_port = stdout.read().decode().strip()
@@ -44,7 +52,6 @@ def send_to_vm_and_run(tar_file_path, image_name, vm_info):
         ssh.close()
         sys.exit(1)
 
-    # Run the container with available port mapped to container port 8080
     run_cmd = f"docker run -d -p {available_port}:8080 --name {image_name}_container {image_name}"
     stdin, stdout, stderr = ssh.exec_command(run_cmd)
     container_id = stdout.read().decode().strip()
@@ -54,7 +61,6 @@ def send_to_vm_and_run(tar_file_path, image_name, vm_info):
         ssh.close()
         sys.exit(1)
 
-    # Final result
     live_link = f"http://{host}:{available_port}"
     result = {
         "container_port": available_port,
