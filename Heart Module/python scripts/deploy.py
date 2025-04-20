@@ -36,7 +36,7 @@ def send_to_vm_and_run(tar_file_path, image_name, vm_info):
 
     # Get available port from custom script
     print(f"[Info] Fetching available port from VM...")
-    stdin, stdout, stderr = ssh.exec_command(f"bash /home/{username}/get_available_port.sh")
+    stdin, stdout, stderr = ssh.exec_command("portFinder")
     available_port = stdout.read().decode().strip()
     error = stderr.read().decode().strip()
     if error:
