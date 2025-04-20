@@ -1,4 +1,4 @@
-# AI Prediction for Auto-Scaling and Auto-Descaling of VMware (Future Scope)
+# Gut Module for Auto-Scaling and Auto-Descaling of VMware (Future Scope)
 
 ## Overview
 This feature aims to integrate **AI-based predictions** for **auto-scaling** and **auto-descaling** of VMware virtual machines based on historical CPU and RAM usage data from log files. By utilizing machine learning, the system will predict the resource requirements and dynamically adjust the allocated CPU and RAM for VMware VMs.
