@@ -18,7 +18,14 @@ public class Deployment {
 	    private String containerIp;
 	    private String containerPort;
 	    private String liveUrl; 
-	    private Long userId; 
+	    private String projectName;
+	    public String getProjectName() {
+			return projectName;
+		}
+		public void setProjectName(String projectName) {
+			this.projectName = projectName;
+		}
+		private Long userId; 
 	    private LocalDateTime createdAt;
 	    private LocalDateTime updatedAt;
 	

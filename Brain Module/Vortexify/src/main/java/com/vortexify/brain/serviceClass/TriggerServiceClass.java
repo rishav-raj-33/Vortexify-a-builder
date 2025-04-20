@@ -161,6 +161,7 @@ public class TriggerServiceClass implements TriggerService {
 	            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
 	            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
 	            	deploymentInfoDeployment.setUserId(userId);
+	            	deploymentInfoDeployment.setProjectName("");  //needs to be set
 	            	entityService.storeInfo(deploymentInfoDeployment);
 	                return true;  
 	            } else {
