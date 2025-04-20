@@ -57,7 +57,7 @@ def send_to_vm_and_run(tar_file_path, image_name, vm_info):
     # Final result
     live_link = f"http://{host}:{available_port}"
     result = {
-        "container_port": "8080",
+        "container_port": available_port,
         "container_id": container_id,
         "live_link": live_link
     }
