@@ -12,13 +12,12 @@ public interface TriggerService {
 	 
 	 boolean buildDockerImage(String path) throws DeploymentFailedException ,IOException, InterruptedException;
 	 
-	 boolean deployDockerImage(String hostName,Long userId)throws DeploymentFailedException ,IOException, InterruptedException; 
+	 boolean deployDockerImage(String name,Long userId)throws DeploymentFailedException ,IOException, InterruptedException; 
+	
 	 
-	 boolean copyImage(String hostName) throws DeploymentFailedException, InterruptedException, IOException;
+	 boolean stopContainer(String containerId) throws DeploymentFailedException, InterruptedException, IOException;
 	 
-	 boolean stopContainer(String hostName,String containerId) throws DeploymentFailedException, InterruptedException, IOException;
-	 
-	 boolean removeImage(String hostName,String containerId) throws DeploymentFailedException, InterruptedException, IOException;
+	 boolean removeImage(String imageId,String containerId) throws DeploymentFailedException, InterruptedException, IOException;
 	 
 	 
 

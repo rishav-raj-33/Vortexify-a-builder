@@ -31,12 +31,13 @@ public class TriggerServiceClass implements TriggerService {
 	public boolean cloneRepo(String url) throws DeploymentFailedException ,IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
-		String pythonScriptPath = "scripts/?.py"; 
+		String pythonScriptPath = AppConstants.CLONE_DIR+AppConstants.CLONE_SCRIPT; 
 	        List<String> command = new ArrayList<>();
 	        
 	        command.add("python"); 
 	        command.add(pythonScriptPath);
-	        command.add(url); // Add arguments
+	        command.add(url); 
+	        command.add(AppConstants.CLONE_DIR); 
 
 	        
 	            ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -77,12 +78,14 @@ public class TriggerServiceClass implements TriggerService {
 	public boolean buildDockerImage(String path) throws DeploymentFailedException, IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
-		String pythonScriptPath = "scripts/?.py"; 
+		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.BUILD_DOCKER_SCRIPT; 
 	        List<String> command = new ArrayList<>();
 	        
 	        command.add("python"); 
 	        command.add(pythonScriptPath);
-	        command.add(path); // Add arguments
+	        command.add(AppConstants.CLONE_DIR+path); // Add arguments (path change to name)
+	        command.add(AppConstants.TAR_DIR); // Add arguments
+	        command.add(path); // Add arguments  (path change to name)
 
 	        
 	            ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -116,15 +119,19 @@ public class TriggerServiceClass implements TriggerService {
 	}
 
 	@Override
-	public boolean deployDockerImage(String hostName,Long userId) throws DeploymentFailedException, IOException, InterruptedException {
+	public boolean deployDockerImage(String name,Long userId) throws DeploymentFailedException, IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
-		String pythonScriptPath = "scripts/?.py"; 
+		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.DEPLOY_SCRIPT; 
 	        List<String> command = new ArrayList<>();
 	        
 	        command.add("python"); 
 	        command.add(pythonScriptPath);
-	        command.add(hostName); // Add arguments
+	        command.add(AppConstants.TAR_DIR+name+".tar"); 
+	        command.add(name); 
+	        command.add(AppConstants.HOSTNAME); 
+	        command.add(AppConstants.USER_NAME);
+	        command.add(AppConstants.PASSWORD);
 
 	        
 	            ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -178,62 +185,23 @@ public class TriggerServiceClass implements TriggerService {
 	            }
 	}
 
+
+	
+
 	@Override
-	public boolean copyImage(String hostName)
+	public boolean stopContainer(String containerId)
 			throws DeploymentFailedException, InterruptedException, IOException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
-		String pythonScriptPath = "scripts/?.py"; 
+		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.STOP_SCRIPT; 
 	        List<String> command = new ArrayList<>();
 	        
 	        command.add("python"); 
 	        command.add(pythonScriptPath);
-	        command.add(hostName); // Add arguments
-	       
-
-	        
-	            ProcessBuilder processBuilder = new ProcessBuilder(command);
-	     
-	            processBuilder.redirectErrorStream(false);
-	            Process process = processBuilder.start();
-	            
-	            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-	            String line1;
-	            while ((line1 = errorReader.readLine()) != null) {
-	                errorOutput.append(line1).append("\n");
-	            }
-	            // Capture output
-	            StringBuilder output = new StringBuilder();
-	            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-	                String line;
-	                while ((line = reader.readLine()) != null) {
-	                    output.append(line).append("\n");
-	                }   
-	            }
-
-	            // Wait for the process to finish
-	            int exitCode = process.waitFor();
-	            if (exitCode == 0) {
-	            	log.info("Run Container script script excuted....");
-	                return true;  
-	            } else {
-	            	 log.error("Run Container script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-	            	throw new DeploymentFailedException(errorOutput.toString());
-	            }
-	}
-
-	@Override
-	public boolean stopContainer(String hostName, String containerId)
-			throws DeploymentFailedException, InterruptedException, IOException {
-	    StringBuilder errorOutput = new StringBuilder();
-		
-		String pythonScriptPath = "scripts/?.py"; 
-	        List<String> command = new ArrayList<>();
-	        
-	        command.add("python"); 
-	        command.add(pythonScriptPath);
-	        command.add(hostName); // Add arguments
 	        command.add(containerId);
+	        command.add(AppConstants.HOSTNAME); 
+	        command.add(AppConstants.USER_NAME);
+	        command.add(AppConstants.PASSWORD);
 
 	        
 	            ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -267,17 +235,20 @@ public class TriggerServiceClass implements TriggerService {
 	}
 
 	@Override
-	public boolean removeImage(String hostName, String containerId)
+	public boolean removeImage(String imageId, String containerId)
 			throws DeploymentFailedException, InterruptedException, IOException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
-		String pythonScriptPath = "scripts/?.py"; 
+		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.REMOVE_DEPLOY_SCRIPT;; 
 	        List<String> command = new ArrayList<>();
 	        
 	        command.add("python"); 
 	        command.add(pythonScriptPath);
-	        command.add(hostName); // Add arguments
 	        command.add(containerId);
+	        command.add(imageId); 
+	        command.add(AppConstants.HOSTNAME);
+	        command.add(AppConstants.USER_NAME);
+	        command.add(AppConstants.PASSWORD);
 
 	        
 	            ProcessBuilder processBuilder = new ProcessBuilder(command);

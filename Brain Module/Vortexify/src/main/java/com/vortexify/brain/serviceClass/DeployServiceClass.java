@@ -36,7 +36,6 @@ public class DeployServiceClass implements DeployService {
 		
 		triggerService.cloneRepo(request.getUrl());
 		triggerService.buildDockerImage("?");  //path needs to be passed
-		triggerService.copyImage("?");  //hostName needs to be passed
 		triggerService.deployDockerImage("?",request.getUserId());  //hostName and userId needs to be passed
 		DeploymentSuccessResponse response=entityService.getDeployInfo(request);
 		return response;
@@ -86,7 +85,7 @@ public class DeployServiceClass implements DeployService {
 		//need DeploymentService to get the ContainerID here.
 		
 		
-		triggerService.stopContainer("?", "?");  //hostName //containerId need to be passed
+		triggerService.stopContainer("?");  //containerId need to be passed
 		
 		
 		
