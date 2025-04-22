@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +22,18 @@ import com.vortexify.brain.service.TriggerService;
 
 
 
+
+
 @Service
 public class TriggerServiceClass implements TriggerService {
 	
 	private Logger log=LoggerFactory.getLogger(TriggerServiceClass.class);
 	
-//	@Autowired
-//	private EntityService entityService;
+	@Autowired
+	private EntityService entityService;
 
 	@Override
-	public boolean cloneRepo(String url) throws DeploymentFailedException ,IOException, InterruptedException {
+	public boolean cloneRepo(String url,String name) throws DeploymentFailedException ,IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
 		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.CLONE_SCRIPT; 
@@ -38,6 +43,7 @@ public class TriggerServiceClass implements TriggerService {
 	        command.add(pythonScriptPath);
 	        command.add(url); 
 	        command.add(AppConstants.CLONE_DIR); 
+	        command.add(name);
 
 	        
 	            ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -55,6 +61,7 @@ public class TriggerServiceClass implements TriggerService {
 	            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 	                String line;
 	                while ((line = reader.readLine()) != null) {
+	                	log.info(line);
 	                    output.append(line).append("\n");
 	                }   
 	            }
@@ -103,6 +110,7 @@ public class TriggerServiceClass implements TriggerService {
 	            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 	                String line;
 	                while ((line = reader.readLine()) != null) {
+	                	log.info(line);
 	                    output.append(line).append("\n");
 	                }   
 	            }
@@ -142,14 +150,16 @@ public class TriggerServiceClass implements TriggerService {
 	            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 	            String line1;
 	            while ((line1 = errorReader.readLine()) != null) {
+	            	
 	                errorOutput.append(line1).append("\n");
 	            }
 	            // Capture output
-	            StringBuilder output = new StringBuilder();
+	            String output="";
 	            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 	                String line;
 	                while ((line = reader.readLine()) != null) {
-	                    output.append(line).append("\n");
+	                	log.info(line);
+	                    output=line;
 	                }   
 	            }
 	            
@@ -158,12 +168,13 @@ public class TriggerServiceClass implements TriggerService {
 	            // Wait for the process to finish
 	            int exitCode = process.waitFor();
 	            if (exitCode == 0) {
-	            	log.info("Deploy script script excuted...."+output);
-	            	
-	            	
-	            	deploymentInfoDeployment.setContainerIp("?");  //set container id
-	            	deploymentInfoDeployment.setContainerPort("?");  //set container port
-	            	deploymentInfoDeployment.setLiveUrl("?");   //set live url
+	            	log.info("Deploy script script excuted....");
+	            	String cPort=extractInfo(output, "cPort");
+	            	String cId=extractInfo(output, "cId");
+	            	String liveLink=extractInfo(output, "live");
+	            	deploymentInfoDeployment.setContainerIp(cId);  
+	            	deploymentInfoDeployment.setContainerPort(cPort);  
+	            	deploymentInfoDeployment.setLiveUrl(liveLink);   
 	            	deploymentInfoDeployment.setStatus(AppConstants.DEPLOYMENTSTATUS.SUCCESS.toString());
 	            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
 	            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
@@ -173,9 +184,9 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Deploy script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-		            	deploymentInfoDeployment.setContainerIp(null);  //set container id
-		            	deploymentInfoDeployment.setContainerPort(null);  //set container port
-		            	deploymentInfoDeployment.setLiveUrl(null);   //set live url
+		            	deploymentInfoDeployment.setContainerIp(null);  
+		            	deploymentInfoDeployment.setContainerPort(null);  
+		            	deploymentInfoDeployment.setLiveUrl(null);   
 		            	deploymentInfoDeployment.setStatus(AppConstants.DEPLOYMENTSTATUS.FAILED.toString());
 		            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
 		            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
@@ -219,6 +230,7 @@ public class TriggerServiceClass implements TriggerService {
 	            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 	                String line;
 	                while ((line = reader.readLine()) != null) {
+	                	log.info(line);
 	                    output.append(line).append("\n");
 	                }   
 	            }
@@ -266,6 +278,7 @@ public class TriggerServiceClass implements TriggerService {
 	            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 	                String line;
 	                while ((line = reader.readLine()) != null) {
+	                	log.info(line);
 	                    output.append(line).append("\n");
 	                }   
 	            }
@@ -280,7 +293,29 @@ public class TriggerServiceClass implements TriggerService {
 	            	throw new DeploymentFailedException(errorOutput.toString());
 	            }
 	}
+	
+	
+	
+	
+	private String extractInfo(String output,String item) {
+		
+	    Pattern portPattern = Pattern.compile("'container_port'\\s*:\\s*'([^']*)'");
+        Pattern idPattern = Pattern.compile("'container_id'\\s*:\\s*'([^']*)'");
+        Pattern linkPattern = Pattern.compile("'live_link'\\s*:\\s*'([^']*)'");
 
-
-
+        Matcher portMatcher = portPattern.matcher(output);
+        Matcher idMatcher = idPattern.matcher(output);
+        Matcher linkMatcher = linkPattern.matcher(output);
+        
+        switch (item) {
+		case "cId": 
+			 if (idMatcher.find()) return idMatcher.group(1);
+		case "cPort":
+			if (portMatcher.find())  return portMatcher.group(1);
+		case "live":
+			 if (linkMatcher.find()) return linkMatcher.group(1);		        
+   				
+	}
+        return null;
+}
 }

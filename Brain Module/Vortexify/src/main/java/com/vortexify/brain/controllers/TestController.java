@@ -29,7 +29,7 @@ public class TestController {
 	
 	@GetMapping("/clone/")
 	public ResponseEntity<Boolean> testClone(@RequestBody Request url) throws DeploymentFailedException, IOException, InterruptedException{
-		 boolean success=this.triggerService.cloneRepo(url.getUrl());
+		 boolean success=this.triggerService.cloneRepo(url.getUrl(),"test-phase-1");
 		 return new ResponseEntity<>(success,HttpStatus.ACCEPTED);
 	}
 	

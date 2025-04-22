@@ -3,27 +3,22 @@ import sys
 import subprocess
 from urllib.parse import urlparse
 
-def extract_repo_name(repo_url):
-    parsed = urlparse(repo_url)
-    path = parsed.path.rstrip('/')
-    repo_name = path.split('/')[-1]
-    if repo_name.endswith('.git'):
-        repo_name = repo_name[:-4]
-    return repo_name
+
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print("Usage: python clone.py <GitHub Repo URL> <Parent Folder Path>")
         sys.exit(1)
 
     repo_url = sys.argv[1]
     parent_folder = sys.argv[2]
+    repo_name = sys.argv[3]
 
     if not os.path.exists(parent_folder):
         print(f"Error: The parent folder '{parent_folder}' does not exist.")
         sys.exit(1)
 
-    repo_name = extract_repo_name(repo_url)
+    
     target_path = os.path.join(parent_folder, repo_name)
 
     if os.path.exists(target_path):

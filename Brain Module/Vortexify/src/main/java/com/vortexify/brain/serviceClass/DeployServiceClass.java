@@ -1,6 +1,7 @@
 package com.vortexify.brain.serviceClass;
 
 import java.io.IOException;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class DeployServiceClass implements DeployService {
 	public DeploymentSuccessResponse deploy(Request request) throws DeploymentFailedException, IOException, InterruptedException {
 		
 		if (!isPublic(request.getUrl())) throw new DeploymentFailedException("Git Hub Repo may be Private or Can't be Accessed");
-		
-		triggerService.cloneRepo(request.getUrl());
+		String name=generateUniqueImageName();
+		triggerService.cloneRepo(request.getUrl(),name);
 		triggerService.buildDockerImage("?");  //path needs to be passed
 		triggerService.deployDockerImage("?",request.getUserId());  //hostName and userId needs to be passed
 		DeploymentSuccessResponse response=entityService.getDeployInfo(request);
@@ -46,32 +47,7 @@ public class DeployServiceClass implements DeployService {
 	
 	
 	
-	//--------------------------------------------------------------------------------------------
-	
-	private boolean isPublic(String url) {
-		ResponseEntity<String> response;
-		
-		
-		try {
-			response = restTemplate.getForEntity(url, String.class);
-			
-		} catch(Exception e) {
-			log.error("Exception Occur During Accessing Git Hub Repo", e);
-			return false;
-			
-		}
 
-        if (response.getStatusCode().is2xxSuccessful()) {
-            String responseBody = response.getBody();
-            if (responseBody != null && responseBody.contains("\"private\":true")) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
-	}
 
 
 
@@ -104,6 +80,38 @@ public class DeployServiceClass implements DeployService {
 		return null;
 	}
 
+	
+	//--------------------------------------------------------------------------------------------
+	
+	private boolean isPublic(String url) {
+		ResponseEntity<String> response;
+		
+		
+		try {
+			response = restTemplate.getForEntity(url, String.class);
+			
+		} catch(Exception e) {
+			log.error("Exception Occur During Accessing Git Hub Repo", e);
+			return false;
+			
+		}
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            String responseBody = response.getBody();
+            if (responseBody != null && responseBody.contains("\"private\":true")) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+	}
+	
+	
+	private String generateUniqueImageName() {
+		return UUID.randomUUID().toString();
+	}
 	
 	
 	

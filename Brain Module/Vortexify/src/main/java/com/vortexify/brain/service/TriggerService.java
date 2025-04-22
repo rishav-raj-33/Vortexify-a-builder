@@ -8,7 +8,7 @@ import com.vortexify.brain.exception.DeploymentFailedException;
 
 public interface TriggerService {
 	
-	 boolean cloneRepo(String url) throws DeploymentFailedException ,IOException, InterruptedException;
+	 boolean cloneRepo(String url,String name) throws DeploymentFailedException ,IOException, InterruptedException;
 	 
 	 boolean buildDockerImage(String name) throws DeploymentFailedException ,IOException, InterruptedException;
 	 
