@@ -28,7 +28,7 @@ public class EntityServiceClass implements EntityService {
 
 	@Override
 	public boolean deleteInfo(Request stopRequest) {
-		List<Deployment> deployment=deployRepo.findfindByUserId(stopRequest.getUserId());
+		List<Deployment> deployment=deployRepo.findByUserId(stopRequest.getUserId());
 		deployRepo.deleteAll(deployment);
 		return true;
 	}
@@ -52,7 +52,7 @@ public class EntityServiceClass implements EntityService {
 	@Override
 	public List<DeploymentSuccessResponse> getDeploymentInfo(Long userId) {
 		
-		List<Deployment> list=deployRepo.findfindByUserId(userId);
+		List<Deployment> list=deployRepo.findByUserId(userId);
 		List<DeploymentSuccessResponse> list2=list.stream().map((obj)->modelMapper.map(obj, DeploymentSuccessResponse.class)).toList();
 		return list2;
 	}

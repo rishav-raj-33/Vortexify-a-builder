@@ -10,9 +10,9 @@ def delete_tar_from_vm(ssh, username, image_name):
     stdin, stdout, stderr = ssh.exec_command(f"rm -f {remote_tar_path}")
     err = stderr.read().decode().strip()
     if err:
-        print(f"[VM Error] Failed to delete TAR file: {err}")
+        print("[VM Error] Failed to delete TAR file: {err}")
     else:
-        print(f"[✓] TAR file deleted from VM.")
+        print("[Ok] TAR file deleted from VM.")
 
 def send_to_vm_and_run(tar_file_path, image_name, vm_info):
     host, port, username, password = vm_info['host'], vm_info['port'], vm_info['username'], vm_info['password']
@@ -43,7 +43,7 @@ def send_to_vm_and_run(tar_file_path, image_name, vm_info):
     # 🧹 Delete TAR file after successful load
     delete_tar_from_vm(ssh, username, image_name)
 
-    print(f"[Info] Fetching available port from VM...")
+    print("[Info] Fetching available port from VM...")
     stdin, stdout, stderr = ssh.exec_command("portFinder")
     available_port = stdout.read().decode().strip()
     error = stderr.read().decode().strip()
@@ -68,7 +68,7 @@ def send_to_vm_and_run(tar_file_path, image_name, vm_info):
         "live_link": live_link
     }
 
-    print("\n[✓] Container deployed successfully!")
+    print("\n[OK] Container deployed successfully!")
     print(result)
     ssh.close()
 

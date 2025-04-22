@@ -24,14 +24,14 @@ public class TriggerServiceClass implements TriggerService {
 	
 	private Logger log=LoggerFactory.getLogger(TriggerServiceClass.class);
 	
-	@Autowired
-	private EntityService entityService;
+//	@Autowired
+//	private EntityService entityService;
 
 	@Override
 	public boolean cloneRepo(String url) throws DeploymentFailedException ,IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
-		String pythonScriptPath = AppConstants.CLONE_DIR+AppConstants.CLONE_SCRIPT; 
+		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.CLONE_SCRIPT; 
 	        List<String> command = new ArrayList<>();
 	        
 	        command.add("python"); 
@@ -158,7 +158,7 @@ public class TriggerServiceClass implements TriggerService {
 	            // Wait for the process to finish
 	            int exitCode = process.waitFor();
 	            if (exitCode == 0) {
-	            	log.info("Deploy script script excuted....");
+	            	log.info("Deploy script script excuted...."+output);
 	            	
 	            	
 	            	deploymentInfoDeployment.setContainerIp("?");  //set container id

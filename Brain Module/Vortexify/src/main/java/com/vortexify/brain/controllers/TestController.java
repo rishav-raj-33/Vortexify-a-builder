@@ -1,4 +1,6 @@
-package com.vortexify.brain.controllers.testController;
+package com.vortexify.brain.controllers;
+
+
 
 import java.io.IOException;
 
@@ -7,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vortexify.brain.exception.DeploymentFailedException;
+import com.vortexify.brain.payloads.Request;
 import com.vortexify.brain.service.TriggerService;
 
 
@@ -23,9 +27,9 @@ public class TestController {
 	
 	
 	
-	@GetMapping("/clone/{url}")
-	public ResponseEntity<Boolean> testClone(@PathVariable String url) throws DeploymentFailedException, IOException, InterruptedException{
-		 boolean success=this.triggerService.cloneRepo(url);
+	@GetMapping("/clone/")
+	public ResponseEntity<Boolean> testClone(@RequestBody Request url) throws DeploymentFailedException, IOException, InterruptedException{
+		 boolean success=this.triggerService.cloneRepo(url.getUrl());
 		 return new ResponseEntity<>(success,HttpStatus.ACCEPTED);
 	}
 	
@@ -62,3 +66,4 @@ public class TestController {
 	
 	
 }
+

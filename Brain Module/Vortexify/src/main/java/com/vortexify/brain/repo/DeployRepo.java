@@ -9,7 +9,7 @@ import com.vortexify.brain.entity.Deployment;
 public interface DeployRepo extends JpaRepository<Deployment, Long> {
 	
 	Deployment findByLiveUrl(String liveUrl);
-	List<Deployment>  findfindByUserId(Long userId);
+	List<Deployment>  findByUserId(Long userId);
 	
 	
 	
