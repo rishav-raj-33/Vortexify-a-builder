@@ -13,5 +13,11 @@ public interface DeployService {
 	DeploymentSuccessResponse deploy(Request request) throws DeploymentFailedException, IOException, InterruptedException;
 
 	
-	public DeploymentSuccessResponse stop(Request request) throws DeploymentFailedException, IOException,InterruptedException;
+	 DeploymentSuccessResponse stop(Request request) throws DeploymentFailedException, IOException,InterruptedException;
+	
+	 void remove(Request request) throws DeploymentFailedException, IOException,InterruptedException;
+	
+	
+	 boolean removeUser(Long userId)throws DeploymentFailedException, IOException, InterruptedException;
+	 
 }

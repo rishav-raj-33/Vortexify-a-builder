@@ -7,7 +7,8 @@ public class AppConstants {
 	    PENDING,
 	    IN_PROGRESS,
 	    SUCCESS,
-	    FAILED
+	    FAILED,
+	    STOP
 	};
 	
 	public static final String HOSTNAME="192.168.18.128";

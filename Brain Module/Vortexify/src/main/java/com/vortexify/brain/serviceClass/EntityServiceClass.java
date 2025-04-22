@@ -27,8 +27,8 @@ public class EntityServiceClass implements EntityService {
 	}
 
 	@Override
-	public boolean deleteInfo(Request stopRequest) {
-		List<Deployment> deployment=deployRepo.findByUserId(stopRequest.getUserId());
+	public boolean deleteInfos(Long userId) {
+		List<Deployment> deployment=deployRepo.findByUserId(userId);
 		deployRepo.deleteAll(deployment);
 		return true;
 	}
@@ -70,6 +70,27 @@ public class EntityServiceClass implements EntityService {
 		response.setUpdatedAt(getDeploymentInfo.getUpdatedAt());
 		return response;
 	}
+
+	@Override
+	public Deployment getDeployInfo(String liveUrl) {
+		Deployment getDeploymentInfo=deployRepo.findByLiveUrl(liveUrl);
+		return getDeploymentInfo;
+	}
+
+	@Override
+	public List<Deployment> getDeployments(Long userId) {
+		List<Deployment> deployments=this.deployRepo.findByUserId(userId);
+		return deployments;
+	}
+
+	@Override
+	public boolean deleteInfo(Request request) {
+		Deployment deployment=deployRepo.findByLiveUrl(request.getUrl());
+	   deployRepo.delete(deployment);
+		return true;
+	}
+	
+	
 	
 	
 	

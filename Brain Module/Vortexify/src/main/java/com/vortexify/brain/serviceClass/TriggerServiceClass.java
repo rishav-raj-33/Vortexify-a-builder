@@ -180,7 +180,7 @@ public class TriggerServiceClass implements TriggerService {
 	            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
 	            	deploymentInfoDeployment.setUserId(userId);
 	            	deploymentInfoDeployment.setProjectName(name);  
-//	            	entityService.storeInfo(deploymentInfoDeployment);
+	            	entityService.storeInfo(deploymentInfoDeployment);
 	                return true;  
 	            } else {
 	            	 log.error("Deploy script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
@@ -191,7 +191,7 @@ public class TriggerServiceClass implements TriggerService {
 		            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
 		            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
 		            	deploymentInfoDeployment.setUserId(userId);
-//		            	entityService.storeInfo(deploymentInfoDeployment);
+		            	entityService.storeInfo(deploymentInfoDeployment);
 	            	throw new DeploymentFailedException(output.toString());
 	            }
 	}
