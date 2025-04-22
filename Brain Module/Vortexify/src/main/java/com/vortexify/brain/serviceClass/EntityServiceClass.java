@@ -33,18 +33,9 @@ public class EntityServiceClass implements EntityService {
 		return true;
 	}
 
-	//pending.....
 	
-	@Override
-	public boolean updateInfo(Deployment deployment, Request request) {
-		//Deployment getDeployment=deployRepo.findByLiveUrl(request.getLiveUrl());
-		
-		
-		
-		
-		
-		return false;
-	}
+	
+
 
 	
 	//Pagination Pending...
@@ -88,6 +79,18 @@ public class EntityServiceClass implements EntityService {
 		Deployment deployment=deployRepo.findByLiveUrl(request.getUrl());
 	   deployRepo.delete(deployment);
 		return true;
+	}
+
+	@Override
+	public DeploymentSuccessResponse getDeploymentInfo(String liveUrl) {
+	Deployment getDeploymentInfo=deployRepo.findByLiveUrl(liveUrl);
+		DeploymentSuccessResponse response=new DeploymentSuccessResponse();
+		response.setUserId(getDeploymentInfo.getUserId());
+		response.setLiveUrl(getDeploymentInfo.getLiveUrl());
+		response.setStatus(getDeploymentInfo.getStatus());
+		response.setCreatedAt(getDeploymentInfo.getCreatedAt());
+		response.setUpdatedAt(getDeploymentInfo.getUpdatedAt());
+		return response;
 	}
 	
 	

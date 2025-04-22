@@ -18,6 +18,7 @@ import com.vortexify.brain.payloads.Request;
 import com.vortexify.brain.payloads.DeploymentSuccessResponse;
 import com.vortexify.brain.service.DeployService;
 import com.vortexify.brain.service.EntityService;
+import com.vortexify.brain.service.FileService;
 import com.vortexify.brain.service.TriggerService;
 
 
@@ -32,6 +33,9 @@ public class DeployServiceClass implements DeployService {
 	@Autowired
 	private EntityService entityService;
 	
+	@Autowired
+	private FileService fileService;
+	
 	private Logger log=LoggerFactory.getLogger(DeployServiceClass.class);
 	
 	
@@ -42,13 +46,22 @@ public class DeployServiceClass implements DeployService {
 		
 		String name=generateUniqueImageName();
 		
-	     if(triggerService.cloneRepo(request.getUrl(),name))
-	     if(triggerService.buildDockerImage(name))
-		  triggerService.deployDockerImage(name,request.getUserId());  
-		  
-	     
+		
+		try {
+			
+			if(triggerService.cloneRepo(request.getUrl(),name))
+			     if(triggerService.buildDockerImage(name)) 
+			       triggerService.deployDockerImage(name,request.getUserId());
+		}finally {
+			
+			try {
+				fileService.deleteFolder(AppConstants.CLONE_DIR+name);
+				fileService.deleteLocalFiles(name+".tar");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
+		} 
 	     DeploymentSuccessResponse response=entityService.getDeployInfo(request);
-	 
 		return response;
 	}
 	
@@ -89,25 +102,11 @@ public class DeployServiceClass implements DeployService {
 	@Override
 	public boolean removeUser(Long userId) throws DeploymentFailedException, IOException, InterruptedException {
 		List<Deployment> deployments=entityService.getDeployments(userId);
-		
-		
 		for(int i=0;i<deployments.size();i++) {
 			triggerService.removeImage(deployments.get(i).getProjectName(), deployments.get(i).getContainerIp());
 		}
-		
 		entityService.deleteInfos(userId);
-		
-		
-		
-		
-		
-		
-		
-		
-			
-		
-		
-		return false;
+		return true;
 	}
 
 	

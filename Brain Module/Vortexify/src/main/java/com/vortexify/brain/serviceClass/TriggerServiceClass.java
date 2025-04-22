@@ -184,14 +184,6 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Deploy script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-		            	deploymentInfoDeployment.setContainerIp(null);  
-		            	deploymentInfoDeployment.setContainerPort(null);  
-		            	deploymentInfoDeployment.setLiveUrl(null);   
-		            	deploymentInfoDeployment.setStatus(AppConstants.DEPLOYMENTSTATUS.FAILED.toString());
-		            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
-		            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
-		            	deploymentInfoDeployment.setUserId(userId);
-		            	entityService.storeInfo(deploymentInfoDeployment);
 	            	throw new DeploymentFailedException(output.toString());
 	            }
 	}
