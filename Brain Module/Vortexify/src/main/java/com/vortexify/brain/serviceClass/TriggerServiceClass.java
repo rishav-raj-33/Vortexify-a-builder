@@ -73,7 +73,7 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Clone Repo script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-	            	throw new DeploymentFailedException(errorOutput.toString());
+	            	throw new DeploymentFailedException(output.toString());
 	            }
 
 	        
@@ -122,7 +122,7 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Build Docker Image script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-	            	throw new DeploymentFailedException(errorOutput.toString());
+	            	throw new DeploymentFailedException(output.toString());
 	            }
 	}
 
@@ -192,7 +192,7 @@ public class TriggerServiceClass implements TriggerService {
 		            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
 		            	deploymentInfoDeployment.setUserId(userId);
 //		            	entityService.storeInfo(deploymentInfoDeployment);
-	            	throw new DeploymentFailedException(errorOutput.toString());
+	            	throw new DeploymentFailedException(output.toString());
 	            }
 	}
 
@@ -242,7 +242,7 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Stop Container script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-	            	throw new DeploymentFailedException(errorOutput.toString());
+	            	throw new DeploymentFailedException(output.toString());
 	            }
 	}
 
@@ -290,7 +290,7 @@ public class TriggerServiceClass implements TriggerService {
 	                return true;  
 	            } else {
 	            	 log.error("Remove Image script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
-	            	throw new DeploymentFailedException(errorOutput.toString());
+	            	throw new DeploymentFailedException(output.toString());
 	            }
 	}
 	
