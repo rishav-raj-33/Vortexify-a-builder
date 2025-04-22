@@ -75,7 +75,7 @@ public class TriggerServiceClass implements TriggerService {
 	}
 
 	@Override
-	public boolean buildDockerImage(String path) throws DeploymentFailedException, IOException, InterruptedException {
+	public boolean buildDockerImage(String name) throws DeploymentFailedException, IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
 		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.BUILD_DOCKER_SCRIPT; 
@@ -83,9 +83,9 @@ public class TriggerServiceClass implements TriggerService {
 	        
 	        command.add("python"); 
 	        command.add(pythonScriptPath);
-	        command.add(AppConstants.CLONE_DIR+path); // Add arguments (path change to name)
-	        command.add(AppConstants.TAR_DIR); // Add arguments
-	        command.add(path); // Add arguments  (path change to name)
+	        command.add(AppConstants.CLONE_DIR+name);
+	        command.add(AppConstants.TAR_DIR); 
+	        command.add(name); 
 
 	        
 	            ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -168,8 +168,8 @@ public class TriggerServiceClass implements TriggerService {
 	            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
 	            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
 	            	deploymentInfoDeployment.setUserId(userId);
-	            	deploymentInfoDeployment.setProjectName("");  //needs to be set
-	            	entityService.storeInfo(deploymentInfoDeployment);
+	            	deploymentInfoDeployment.setProjectName(name);  
+//	            	entityService.storeInfo(deploymentInfoDeployment);
 	                return true;  
 	            } else {
 	            	 log.error("Deploy script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
@@ -180,7 +180,7 @@ public class TriggerServiceClass implements TriggerService {
 		            	deploymentInfoDeployment.setCreatedAt(LocalDateTime.now());
 		            	deploymentInfoDeployment.setUpdatedAt(LocalDateTime.now());
 		            	deploymentInfoDeployment.setUserId(userId);
-		            	entityService.storeInfo(deploymentInfoDeployment);
+//		            	entityService.storeInfo(deploymentInfoDeployment);
 	            	throw new DeploymentFailedException(errorOutput.toString());
 	            }
 	}

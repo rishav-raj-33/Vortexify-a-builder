@@ -10,7 +10,7 @@ public interface TriggerService {
 	
 	 boolean cloneRepo(String url) throws DeploymentFailedException ,IOException, InterruptedException;
 	 
-	 boolean buildDockerImage(String path) throws DeploymentFailedException ,IOException, InterruptedException;
+	 boolean buildDockerImage(String name) throws DeploymentFailedException ,IOException, InterruptedException;
 	 
 	 boolean deployDockerImage(String name,Long userId)throws DeploymentFailedException ,IOException, InterruptedException; 
 	
