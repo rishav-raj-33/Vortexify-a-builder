@@ -14,6 +14,7 @@ public interface DeployService {
 
 	
 	 DeploymentSuccessResponse stop(Request request) throws DeploymentFailedException, IOException,InterruptedException;
+	 DeploymentSuccessResponse start(Request request) throws DeploymentFailedException, IOException,InterruptedException;
 	
 	 void remove(Request request) throws DeploymentFailedException, IOException,InterruptedException;
 	

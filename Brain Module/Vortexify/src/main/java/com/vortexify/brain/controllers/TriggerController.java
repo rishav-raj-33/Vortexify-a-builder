@@ -31,7 +31,7 @@ public class TriggerController {
 	
 	@PostMapping("/stop")
 	public ResponseEntity<DeploymentSuccessResponse> stop(@RequestBody Request request) throws DeploymentFailedException, IOException, InterruptedException{
-		return new ResponseEntity<>(service.stop(request),HttpStatus.CREATED);
+		return new ResponseEntity<>(service.stop(request),HttpStatus.ACCEPTED);
 	}
 	
 	
@@ -39,6 +39,12 @@ public class TriggerController {
 	public ResponseEntity<Boolean> remove(@RequestBody Request request) throws DeploymentFailedException, IOException, InterruptedException{
 		service.remove(request);
 		return new ResponseEntity<>(true,HttpStatus.ACCEPTED);
+	}
+	
+	
+	@PostMapping("/start")
+	public ResponseEntity<DeploymentSuccessResponse> start(@RequestBody Request request) throws DeploymentFailedException, IOException, InterruptedException{
+		return new ResponseEntity<>(service.start(request),HttpStatus.ACCEPTED);
 	}
 	
 	

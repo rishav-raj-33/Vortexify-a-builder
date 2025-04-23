@@ -45,23 +45,25 @@ public class DeployServiceClass implements DeployService {
 		if (!isPublic(request.getUrl())) throw new DeploymentFailedException("Git Hub Repo may be Private or Can't be Accessed");
 		
 		String name=generateUniqueImageName();
+		String liveLink=null;
 		
 		
 		try {
 			
 			if(triggerService.cloneRepo(request.getUrl(),name))
 			     if(triggerService.buildDockerImage(name)) 
-			       triggerService.deployDockerImage(name,request.getUserId());
+			    	 liveLink=triggerService.deployDockerImage(name,request.getUserId());
 		}finally {
 			
 			try {
+				triggerService.removeImageLocally(name);
 				fileService.deleteFolder(AppConstants.CLONE_DIR+name);
 				fileService.deleteLocalFiles(name+".tar");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}	
 		} 
-	     DeploymentSuccessResponse response=entityService.getDeployInfo(request);
+	     DeploymentSuccessResponse response=entityService.getDeployInfoUser(liveLink);
 		return response;
 	}
 	
@@ -108,6 +110,26 @@ public class DeployServiceClass implements DeployService {
 		entityService.deleteInfos(userId);
 		return true;
 	}
+	
+	
+	@Override
+	public DeploymentSuccessResponse start(Request request)
+			throws DeploymentFailedException, IOException, InterruptedException {
+		Deployment deployment=entityService.getDeployInfo(request.getUrl());
+		if(triggerService.startContainer(deployment.getContainerIp())) {
+			deployment.setStatus(AppConstants.DEPLOYMENTSTATUS.START.toString());
+			deployment.setUpdatedAt(LocalDateTime.now());
+			this.entityService.storeInfo(deployment);
+		}
+		DeploymentSuccessResponse response=new DeploymentSuccessResponse();
+		response.setCreatedAt(deployment.getCreatedAt());
+		response.setLiveUrl(deployment.getLiveUrl());
+		response.setStatus(deployment.getStatus());
+		response.setUserId(deployment.getUserId());
+		response.setUpdatedAt(deployment.getUpdatedAt());
+		return response;
+		
+	}
 
 	
 	//--------------------------------------------------------------------------------------------
@@ -141,6 +163,9 @@ public class DeployServiceClass implements DeployService {
 	private String generateUniqueImageName() {
 		return UUID.randomUUID().toString();
 	}
+
+
+
 
 
 

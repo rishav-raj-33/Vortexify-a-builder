@@ -4,8 +4,7 @@ public class AppConstants {
 	
 	
 	public static enum DEPLOYMENTSTATUS{
-	    PENDING,
-	    IN_PROGRESS,
+	    START,
 	    SUCCESS,
 	    FAILED,
 	    STOP
@@ -22,6 +21,8 @@ public class AppConstants {
 	public static final String DEPLOY_SCRIPT="deploy.py";
 	public static final String STOP_SCRIPT="stopContainer.py";
 	public static final String REMOVE_DEPLOY_SCRIPT="removeDeploy.py";
+	public static final String REMOVE_IMAGE_LOCALLY="removeImage.py";
+	public static final String START_SCRIPT="start.py";
 	
 
 	

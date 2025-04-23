@@ -14,7 +14,7 @@ public interface EntityService {
 	boolean deleteInfo(Request request);
 	List<DeploymentSuccessResponse> getDeploymentInfo(Long userId);
 	List<Deployment> getDeployments(Long userId);
-    DeploymentSuccessResponse getDeployInfo(Request request);	
+    DeploymentSuccessResponse getDeployInfoUser(String liveLink);	
     Deployment getDeployInfo(String liveUrl);
     public DeploymentSuccessResponse getDeploymentInfo(String liveUrl);
     

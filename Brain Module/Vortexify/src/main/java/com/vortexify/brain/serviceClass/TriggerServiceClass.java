@@ -127,7 +127,7 @@ public class TriggerServiceClass implements TriggerService {
 	}
 
 	@Override
-	public boolean deployDockerImage(String name,Long userId) throws DeploymentFailedException, IOException, InterruptedException {
+	public String deployDockerImage(String name,Long userId) throws DeploymentFailedException, IOException, InterruptedException {
 	    StringBuilder errorOutput = new StringBuilder();
 		
 		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.DEPLOY_SCRIPT; 
@@ -181,7 +181,7 @@ public class TriggerServiceClass implements TriggerService {
 	            	deploymentInfoDeployment.setUserId(userId);
 	            	deploymentInfoDeployment.setProjectName(name);  
 	            	entityService.storeInfo(deploymentInfoDeployment);
-	                return true;  
+	                return liveLink;  
 	            } else {
 	            	 log.error("Deploy script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
 	            	throw new DeploymentFailedException(output.toString());
@@ -230,7 +230,7 @@ public class TriggerServiceClass implements TriggerService {
 	            // Wait for the process to finish
 	            int exitCode = process.waitFor();
 	            if (exitCode == 0) {
-	            	log.info("Stop Container script script excuted....");
+	            	log.info("Stop Container script excuted....");
 	                return true;  
 	            } else {
 	            	 log.error("Stop Container script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
@@ -287,6 +287,100 @@ public class TriggerServiceClass implements TriggerService {
 	}
 	
 	
+	@Override
+	public boolean removeImageLocally(String name) throws DeploymentFailedException, InterruptedException, IOException {
+		
+	    StringBuilder errorOutput = new StringBuilder();
+		
+		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.REMOVE_IMAGE_LOCALLY; 
+	        List<String> command = new ArrayList<>();
+	        
+	        command.add("python"); 
+	        command.add(pythonScriptPath);  
+	        command.add(name);
+	       
+
+	        
+	            ProcessBuilder processBuilder = new ProcessBuilder(command);
+	     
+	            processBuilder.redirectErrorStream(false);
+	            Process process = processBuilder.start();
+	            
+	            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+	            String line1;
+	            while ((line1 = errorReader.readLine()) != null) {
+	                errorOutput.append(line1).append("\n");
+	            }
+	            // Capture output
+	            StringBuilder output = new StringBuilder();
+	            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+	                String line;
+	                while ((line = reader.readLine()) != null) {
+	                	log.info(line);
+	                    output.append(line).append("\n");
+	                }   
+	            }
+
+	            // Wait for the process to finish
+	            int exitCode = process.waitFor();
+	            if (exitCode == 0) {
+	            	log.info("Remove Image Locally script excuted....");
+	                return true;  
+	            } else {
+	            	 log.error("Remove Image Locally script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
+	            	throw new DeploymentFailedException(output.toString());
+	            }
+	}
+	
+	
+	@Override
+	public boolean startContainer(String containerId)
+			throws DeploymentFailedException, InterruptedException, IOException {
+	    StringBuilder errorOutput = new StringBuilder();
+		
+		String pythonScriptPath = AppConstants.SCRIPT_DIR+AppConstants.START_SCRIPT; 
+	        List<String> command = new ArrayList<>();
+	        
+	        command.add("python"); 
+	        command.add(pythonScriptPath);
+	        command.add(containerId);
+	        command.add(AppConstants.HOSTNAME); 
+	        command.add(AppConstants.USER_NAME);
+	        command.add(AppConstants.PASSWORD);
+
+	        
+	            ProcessBuilder processBuilder = new ProcessBuilder(command);
+	     
+	            processBuilder.redirectErrorStream(false);
+	            Process process = processBuilder.start();
+	            
+	            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+	            String line1;
+	            while ((line1 = errorReader.readLine()) != null) {
+	                errorOutput.append(line1).append("\n");
+	            }
+	            // Capture output
+	            StringBuilder output = new StringBuilder();
+	            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+	                String line;
+	                while ((line = reader.readLine()) != null) {
+	                	log.info(line);
+	                    output.append(line).append("\n");
+	                }   
+	            }
+
+	            // Wait for the process to finish
+	            int exitCode = process.waitFor();
+	            if (exitCode == 0) {
+	            	log.info("Start Container script excuted....");
+	                return true;  
+	            } else {
+	            	 log.error("Start Container script failed with exit code {}. Error output: {}", exitCode, errorOutput.toString());
+	            	throw new DeploymentFailedException(output.toString());
+	            }
+	}
+	
+	
 	
 	
 	private String extractInfo(String output,String item) {
@@ -310,4 +404,8 @@ public class TriggerServiceClass implements TriggerService {
 	}
         return null;
 }
+
+	
+
+
 }

@@ -2,13 +2,10 @@ package com.vortexify.brain.serviceClass;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.vortexify.brain.config.AppConstants;
@@ -18,6 +15,10 @@ import com.vortexify.brain.service.FileService;
 
 @Service
 public class FileServiceClass implements FileService {
+	
+	
+	
+	private Logger log=LoggerFactory.getLogger(FileServiceClass.class);
 
 	@Override
 	public boolean deleteLocalFiles(String name) {
@@ -33,30 +34,25 @@ public class FileServiceClass implements FileService {
 
 	@Override
 	public boolean deleteFolder(String folderPath) throws IOException {
-		  Path directory = Paths.get(folderPath);
+		   File fileOrFolder = new File(folderPath);
 
-	        if (Files.notExists(directory)) {
-	            System.out.println("Directory does not exist: " + folderPath);
+	        if (!fileOrFolder.exists()) {
+	            log.error("Path does not exist: " + folderPath);
 	            return false;
 	        }
 
-	        Files.walkFileTree(directory, new SimpleFileVisitor<>() {
-	            @Override
-	            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-	                    throws IOException {
-	                Files.delete(file);
-	                return FileVisitResult.CONTINUE;
+	        if (fileOrFolder.isDirectory()) {
+	            File[] contents = fileOrFolder.listFiles();
+	            if (contents != null) {
+	                for (File file : contents) {
+	                    if (!deleteFolder(file.getAbsolutePath())) {
+	                        return false;
+	                    }
+	                }
 	            }
+	        }
 
-	            @Override
-	            public FileVisitResult postVisitDirectory(Path dir, IOException exc)
-	                    throws IOException {
-	                Files.delete(dir);
-	                return FileVisitResult.CONTINUE;
-	            }
-	        });
-	        
-	        return true;
+	        return fileOrFolder.delete();
 	}
 
 }

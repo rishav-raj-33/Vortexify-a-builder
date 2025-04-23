@@ -49,9 +49,9 @@ public class EntityServiceClass implements EntityService {
 	}
 
 	@Override
-	public DeploymentSuccessResponse getDeployInfo(Request request) {
+	public DeploymentSuccessResponse getDeployInfoUser(String liveLink) {
 		
-		Deployment getDeploymentInfo=deployRepo.findByLiveUrl(request.getUrl());
+		Deployment getDeploymentInfo=deployRepo.findByLiveUrl(liveLink);
 		
 		DeploymentSuccessResponse response=new DeploymentSuccessResponse();
 		response.setUserId(getDeploymentInfo.getUserId());

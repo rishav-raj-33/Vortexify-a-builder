@@ -43,8 +43,8 @@ public class TestController {
 	
 	@GetMapping("/deploy/{name}")
 	public ResponseEntity<Boolean> deployTest(@PathVariable String name) throws DeploymentFailedException, IOException, InterruptedException{
-		boolean sucess=this.triggerService.deployDockerImage(name, 1L);
-		return new ResponseEntity<>(sucess,HttpStatus.ACCEPTED);
+		this.triggerService.deployDockerImage(name, 1L);
+		return new ResponseEntity<>(true,HttpStatus.ACCEPTED);
 	}
 	
 	
