@@ -27,6 +27,13 @@ public class TestController {
 	
 	
 	
+	 @GetMapping("/security")
+	    public String testEndpoint() {
+	        return "API Key is valid!";
+	    }
+	
+	
+	
 	@GetMapping("/clone/")
 	public ResponseEntity<Boolean> testClone(@RequestBody Request url) throws DeploymentFailedException, IOException, InterruptedException{
 		 boolean success=this.triggerService.cloneRepo(url.getUrl(),"test-phase-1");
