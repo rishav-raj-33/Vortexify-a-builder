@@ -1,0 +1,596 @@
+/* nav bar */
+
+.link {
+    text-decoration: none !important;
+    color: white !important;
+}
+
+
+
+nav a {
+    position: relative;
+    padding: 8px 12px;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+/* Little underline effect for hover and active */
+nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0%;
+    background-color: #0077ff;
+    transition: width 0.4s ease;
+}
+
+/* On hover */
+nav a:hover {
+    color: #0077ff;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Current active link */
+nav a.active {
+    color: #0077ff;
+}
+
+nav a.active::after {
+    width: 100%;
+}
+
+/* (Optional) Smoothly shrink underline when moving away */
+nav a:not(.active):not(:hover)::after {
+    width: 0%;
+}
+
+/* background color */
+.color {
+    background: linear-gradient(63deg, #040406, #4e4e57, #0a0a3d) !important;
+}
+
+
+
+
+
+
+/* home page */
+
+
+
+figcaption {
+    font-size: 30px !important;
+}
+
+#heading {
+    font-size: 30px;
+}
+
+
+/* button */
+
+
+.btn-hover {
+    padding: 15px 30px 15px 30px;
+    border: 3px solid white;
+    border-radius: 3px;
+    display: block;
+    width: max-content !important;
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: all .5s ease-out;
+    color: white;
+    background-color: linear-gradient(63deg, #040406, #4e4e57, #0a0a3d) !important;
+
+
+
+
+}
+
+
+.btn-hover:hover,
+#btn-build:hover {
+    transition: 2s ease;
+    transform: translateY(8px);
+}
+
+
+button {
+    background-color: transparent !important;
+}
+
+
+
+
+a {
+    text-decoration: none;
+}
+
+
+
+/* deploy */
+
+
+#deploylist-section,
+#deploy-section {
+    height: 100vh;
+}
+
+
+
+
+.row {
+    --bs-gutter-x: 0 rem !important;
+}
+
+
+
+
+
+#banner {
+
+    width: 100%;
+    height: 100vh;
+
+}
+
+#btn-build {
+    background-color: #00bec9;
+    border-radius: 8px;
+    border: 2px solid #00bec9;
+    padding: 10px 10px 10px 10px;
+    margin: 5px 5px 5px 5px;
+    color: white;
+    width: 100px;
+    margin-left: 35%;
+}
+
+
+
+h1 {
+    font-size: 70px;
+    margin-top: 100px;
+}
+
+
+
+#text {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+@media only screen and (max-width: 1300px) {
+    h1 {
+        font-size: 23px;
+    }
+
+    #text {
+        font-size: 13px;
+
+
+    }
+
+}
+
+#text-area {
+    padding-top: 10vh;
+
+
+}
+
+
+@media only screen and (max-width: 425px) {
+
+    #text-area {
+        padding-left: 10%;
+
+
+    }
+
+    #git-hub-text {
+        width: 80%;
+    }
+
+
+    #btn-build {
+        margin-left: 26%;
+    }
+
+
+
+}
+
+
+
+
+#git-hub-text {
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+#loader {
+
+    margin-left: 38%;
+    margin-top: 10px;
+    display: none;
+
+
+}
+
+
+#undefined-url {
+    margin-top: 10px;
+    display: none;
+}
+
+
+
+/* profile */
+
+
+
+.word {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+#profile {
+    height: 100vh;
+    padding-top: 10%;
+}
+
+.card-p {
+    width: 350px;
+    background-color: #efefef;
+    border: none;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.image img {
+    transition: all 0.5s
+}
+
+.card-p:hover .image img {
+    transform: scale(2)
+}
+
+.btn-p {
+    height: 140px;
+    width: 140px;
+    border-radius: 50%
+}
+
+.name {
+    font-size: 22px;
+    font-weight: bold
+}
+
+.idd {
+    font-size: 14px;
+    font-weight: 600
+}
+
+.idd1 {
+    font-size: 12px
+}
+
+.number {
+    font-size: 22px;
+    font-weight: bold
+}
+
+.follow {
+    font-size: 12px;
+    font-weight: 500;
+    color: #444444
+}
+
+.btn1 {
+    height: 40px;
+    width: 150px;
+    border: none;
+    background-color: #000;
+    color: #aeaeae;
+    font-size: 15px
+}
+
+.text span {
+    font-size: 13px;
+    color: #545454;
+    font-weight: 500
+}
+
+.icons i {
+    font-size: 19px
+}
+
+hr .new1 {
+    border: 1px solid
+}
+
+.join {
+    font-size: 14px;
+    color: #a0a0a0;
+    font-weight: bold
+}
+
+.date {
+    background-color: #ccc
+}
+
+
+
+/* signup */
+
+
+#sign-up {
+    height: 100%;
+
+    padding-top: 8% !important;
+
+
+}
+
+
+#confirmPassword:focus {
+    box-shadow: none !important;
+
+
+}
+
+
+
+@media only screen and (max-width: 768px) {
+
+    #sign-up {
+        height: max-content;
+
+
+    }
+
+    /* signup (password rules) */
+
+
+    #passwordRules {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .rule {
+        color: red;
+    }
+
+    .satisfied {
+        color: green;
+        text-decoration: line-through;
+    }
+
+    #passwordRuleList {
+        padding-left: 0;
+        margin: 0;
+    }
+
+    #passwordRuleList li {
+        margin-bottom: 5px;
+    }
+
+
+
+
+    /* login */
+
+
+}
+
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+
+}
+
+.input-wrapper #eye-icon {
+    margin-right: 8px;
+    font-size: 18px;
+    color: gray;
+}
+
+.input-wrapper input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 16px;
+}
+
+
+
+/* deploy-list */
+
+.link {
+
+    color: white !important;
+    cursor: pointer !important;
+
+}
+
+
+td {
+    background-color: transparent !important;
+    color: white !important;
+}
+
+table td,
+table th {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+thead th,
+tbody th {
+    color: white !important;
+    background-color: transparent !important;
+}
+
+tbody td {
+    font-weight: 500;
+    color: rgba(255, 255, 255, .65);
+}
+
+
+.table {
+    border-collapse: separate !important;
+    border-spacing: 0 40px;
+
+}
+
+
+#deploylist-section {
+    height: 100vh max-content;
+}
+
+
+.btn-border {
+    border: none !important;
+}
+
+
+
+/* eye-button (login and sign up) */
+
+
+#eye-button {
+    border: none !important;
+
+}
+
+
+/* build */
+
+
+
+/* Black screen in the middle */
+.black-screen {
+    background-color: black;
+    width: 80%;
+    margin-top: 10%;
+    height: 60vh;
+    /* Fixed height for the black screen */
+    position: relative;
+    overflow: hidden;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    padding: 20px;
+}
+
+/* Styling for the log display area */
+.log-display {
+    font-family: monospace;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    /* Enable vertical scroll when content overflows */
+    height: 100%;
+    /* Take up the entire height of the parent */
+    box-sizing: border-box;
+    /* Include padding in the height calculation */
+}
+
+/* Responsiveness: Adjust width and height on smaller screens */
+@media (max-width: 768px) {
+    .black-screen {
+        width: 90%;
+        height: 60vh;
+        /* Adjust the height on smaller screens */
+    }
+}
+
+/* Styling for scrollbars */
+.black-screen::-webkit-scrollbar {
+    width: 8px;
+}
+
+.black-screen::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.black-screen::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+
+.log-display::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+/* loader-text effect */
+
+
+.loader-text {
+    opacity: 0;
+    animation: fadeInOut 3s ease-in-out infinite;
+}
+
+/* Keyframes for fade in and fade out */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        /* Start invisible */
+    }
+
+    25% {
+        opacity: 1;
+
+    }
+
+    75% {
+        opacity: 1;
+
+    }
+
+    100% {
+        opacity: 0;
+
+    }
+}
+
+
+/* logout */
+
+#logout {
+    cursor: pointer;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+/* delete account button */
+
+#btn-delete{
+
+    color: red !important;
+
+}
