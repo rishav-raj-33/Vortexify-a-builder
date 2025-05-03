@@ -47,5 +47,10 @@ public class DeploymentInfoController {
 		return new ResponseEntity<>(deployServive.removeUser(userId),HttpStatus.ACCEPTED);
 	}
 	
+	@GetMapping("/count/{userId}")
+	public ResponseEntity<Integer> countDeployment(@PathVariable Long userId) {
+		return new ResponseEntity<Integer>(this.service.getDeploymentInfo(userId).size(),HttpStatus.ACCEPTED);
+	}
+	
 	
 }
