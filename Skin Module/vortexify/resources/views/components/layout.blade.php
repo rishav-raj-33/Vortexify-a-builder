@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ asset('Resources/style.css') }}">
     <script src="{{asset('Resources/bootstrap.bundle.min.js')}}"></script>
     <link rel="icon" type="image/png" href="{{$logo}}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
 
 </head>

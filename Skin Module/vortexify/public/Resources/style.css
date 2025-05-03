@@ -589,8 +589,18 @@ button:focus {
 
 /* delete account button */
 
-#btn-delete{
+#btn-delete {
 
     color: red !important;
 
+}
+
+
+/* loader of Deployment list */
+
+#loader-div {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

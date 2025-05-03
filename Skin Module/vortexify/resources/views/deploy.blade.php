@@ -13,14 +13,14 @@
                     <p id="text">Draws in code, Spinning out solutions
                     </p>
                     <form id="urlForm">
-                        <input class="form-control form-control-lg" type="text" placeholder="Paste Absolue GitHub Url"
+                        <input class="form-control form-control-lg" name="url" type="text" placeholder="Paste Absolue GitHub Url"
                             id="git-hub-text">
-                        <button type="button" id="btn-build" onclick="submitForm()">Build</button>
+                        <button type="button" id="btn-build" onclick="submitForm()" id="build">Build</button>
                     </form>
                     <div class="d-flex mt-5">
                         <button class="btn text-white btn-border fs-5" type="button" disabled id="loader">
                                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                <span role="status" class="loader-text">Deploying...</span>
+                                <span role="status" class="loader-text" id="status">Deploying...</span>
                             </button>
                     </div>
                         

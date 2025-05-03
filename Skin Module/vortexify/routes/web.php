@@ -35,6 +35,8 @@ Route::delete('/deleteUser', [mainController::class, 'deleteUser']);
 Route::post('/signup', [mainController::class, 'register']);
 Route::post('/session', [mainController::class, 'session']);
 Route::delete('/delete', [mainController::class, 'deleteUser']);
+Route::get('/api/status', [mainController::class, 'status']);
+Route::post('/build', [mainController::class, 'requestDeploy']);
 
 
 
