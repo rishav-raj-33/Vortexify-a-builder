@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class mainController extends Controller
@@ -121,43 +122,6 @@ class mainController extends Controller
     //Brain Module Integration Views
 
 
-    function requestDeploy(Request $request)
-    {
-        if (!Auth::check()) {
-            return redirect('/');
-        }
-
-
-        if (Cache::has(Auth::id())) {
-            abort(503, 'Service temporarily unavailable.');
-        }
-
-
-        $validatedUrl = $request->validate([
-            'git_url' => 'required|url|regex:/^https:\/\/github\.com\/[a-zA-Z0-9-]+(\/[a-zA-Z0-9-_.]+)?\/?$/', // Regex for GitHub URL
-        ]);
-
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . env('BRAIN_API_KEY'),
-            ])->post('http://localhost:8080/api/service/deploy', [
-                'url' => $validatedUrl,
-                'userId' => Auth::id(),
-            ]);
-
-            Cache::put(Auth::id(), 'pending', 600);
-            if ($response->successful()) {
-                Cache::put(Auth::id(), 'done', 600);
-                return redirect('/dlist');
-            } else {
-                Cache::forget(Auth::id());
-                abort(500, 'Unexpected internal error occurred.');
-            }
-        } catch (ConnectionException $e) {
-            Cache::forget(Auth::id());
-            abort(503, 'Service temporarily unavailable.');
-        }
-    }
 
 
 
@@ -187,31 +151,6 @@ class mainController extends Controller
     }
 
 
-    //Satus API Called for polling
-
-    public function status()
-    {
-        if (!Auth::check()) {
-            return redirect('/');
-        }
-
-
-        if (!Cache::has(Auth::id())) {
-            return response('', 404);
-        }
-
-        $status = Cache::get(Auth::id());
-
-        if ($status == 'pending') {
-            return response('', 202);
-        } else if ($status == 'done') {
-            Cache::forget(Auth::id());
-            return response('', 200);
-        }
-    }
-
-
-    
 
     function profile()
     {
@@ -229,20 +168,106 @@ class mainController extends Controller
 
 
             $count = $response->json();
-    if ($response->successful()) {
-                 return view("profile",['count'=>$count]);
+            if ($response->successful()) {
+                return view("profile", ['count' => $count]);
             } else {
-                $count="N/A";
-                 return view("profile",['count'=>$count]);
+                $count = "N/A";
+                return view("profile", ['count' => $count]);
             }
         } catch (ConnectionException $e) {
-            $count="N/A";
-                 return view("profile",['count'=>$count]);
+            $count = "N/A";
+            return view("profile", ['count' => $count]);
+        }
+    }
+
+
+    //Satus API Called for polling
+
+    public function status()
+    {
+        if (!Auth::check()) {
+            return response('', 401);
         }
 
 
-        
+        if (!Cache::has(Auth::id())) {
+            return response('', 204);
+        }
+
+        $status = Cache::get(Auth::id());
+
+        if ($status == 'pending') {
+            return response('', 202);
+        } else if ($status == 'done') {
+            Cache::forget(Auth::id());
+            return response('', 200);
+        }
     }
+
+
+    //API for Deploy Request
+
+    public function requestDeploy(Request $request)
+    {
+
+
+        if (!Auth::check()) {
+            return response('', 401);
+        }
+
+
+
+        if (Cache::has(Auth::id())) {
+            return response('', 503);
+        }
+
+        $validated = Validator::make($request->all(), [
+            'git_url' => 'required|url|regex:/^https:\/\/github\.com\/[a-zA-Z0-9-]+(\/[a-zA-Z0-9-_.]+)?\/?$/',   // Regex for GitHub URL
+        ]);
+
+        
+
+
+
+        if ($validated->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validated->errors()
+            ], 422);
+        } else {
+            $validatedUrl = $validated->validated()['git_url'];
+
+            try {
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . env('BRAIN_API_KEY'),
+
+                ])->post(
+                    'http://localhost:8080/api/service/deploy',
+                    [
+                        'url' => $validatedUrl,
+                        'userId' => Auth::id(),
+                    ]
+                );
+
+                Cache::put(Auth::id(), 'pending', 600);
+                if ($response->successful()) {
+                    Cache::put(Auth::id(), 'done', 600);
+                    return response('', 200);
+                } else {
+                    Cache::forget(Auth::id());
+                    return response('', 500);
+                }
+            } catch (ConnectionException $e) {
+                Cache::forget(Auth::id());
+                return response('', 503);
+            }
+        }
+    }
+
+
+
+
+
 
 
 
@@ -284,7 +309,7 @@ class mainController extends Controller
 
     function signup()
     {
-        if (!uth::check()) {
+        if (!Auth::check()) {
             return redirect('/home');
         }
 

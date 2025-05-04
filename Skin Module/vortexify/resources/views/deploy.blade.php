@@ -12,14 +12,15 @@
                     <h1><i class="bi bi-tools text-white me-3 fs-1 ms-3"></i>Vortexify a Builder</h1>
                     <p id="text">Draws in code, Spinning out solutions
                     </p>
-                    <form id="urlForm">
+                    <form id="urlForm" method="post">
+                        @csrf
                         <input class="form-control form-control-lg" name="url" type="text" placeholder="Paste Absolue GitHub Url"
                             id="git-hub-text">
-                        <button type="button" id="btn-build" onclick="submitForm()" id="build">Build</button>
+                        <button type="button" id="btn-build" onclick="submitForm()">Build</button>
                     </form>
                     <div class="d-flex mt-5">
-                        <button class="btn text-white btn-border fs-5" type="button" disabled id="loader">
-                                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <button class="btn text-white btn-border fs-5" type="button" id="loader">
+                                <span class="spinner-border spinner-border-sm" aria-hidden="true" id="spinner"></span>
                                 <span role="status" class="loader-text" id="status">Deploying...</span>
                             </button>
                     </div>

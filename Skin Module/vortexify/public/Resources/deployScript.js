@@ -1,6 +1,10 @@
 let polling;
-const buildBtn = document.getElementById("build");
+let buildBtn = document.getElementById("btn-build");
+let spinner = document.getElementById('spinner');
+
 const statusElement = document.getElementById("status");
+
+
 
 function isValidGitHubRepo(url) {
     const regex = /^https:\/\/github\.com\/[a-zA-Z0-9-]+(\/[a-zA-Z0-9-_.]+)?(\/)?$/;
@@ -20,18 +24,20 @@ function submitForm() {
         }, 3000);
     } else {
         buildBtn.disabled = true;
+        document.getElementById('loader').style.display = 'block';
         clearInterval(polling);
-        fetch('/build', {  // The API endpoint to handle form submission
+        fetch('/request', {  // The API endpoint to handle form submission
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': token
             },
             body: JSON.stringify({
-                git_url: url
+                'git_url': url
             })
         });
-        polling = setInterval(fetchStatus, 5000);
+
+        polling = setInterval(fetchStatus, 10000);
         fetchStatus();  //Starts after Button is clicked..
     }
 
@@ -40,31 +46,43 @@ function submitForm() {
 
 
 function fetchStatus() {
-    fetch('/api/status')
+
+
+
+    fetch('/status')
         .then(response => {
-            if (response.status === 404) {
+            if (response.status === 204) {
                 buildBtn.disabled = false;
+                console.log(response.status);
+                document.getElementById('loader').style.display = 'none';
                 clearInterval(polling);     //if no process is going on then it will prevent from unnecessary calls to backend.
             }
             if (response.status === 202) {
+                console.log(response.status);
                 buildBtn.disabled = true;
                 statusElement.textContent = "Deploying....";
-            } else if (response.status === 200) {
-                statusElement.textContent = "Process complete!";
+
                 document.getElementById('loader').style.display = 'block';
+            } else if (response.status === 200) {
+                console.log(response.status);
+                spinner.style.display = 'none';
+                statusElement.textContent = "Process complete!";
+
                 clearInterval(polling);
             }
         })
         .catch(error => {
             console.error('Error fetching status:', error);
-            statusElement.textContent = "Failed to fetch status. Please try again later.";
+            statusElement.textContent = "Failed..";
         });
 }
 
 //If Page refreshes this will take take of the process status
 
-polling = setInterval(fetchStatus, 5000);
+polling = setInterval(fetchStatus, 10000);   //20000
 fetchStatus();
+
+
 
 
 
