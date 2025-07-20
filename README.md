@@ -96,24 +96,6 @@ See full system architecture and SRS with Other Info at Resouce Directory*
 
 ---
 
-## 🗂️ Folder Structure(High-Level)
-
-Vortexify/
-│
-├── Heart_Module/          # Python scripts for automation <-- from heart-module branch (after merge)
-├── Brain_Module/          # Spring Boot backend  <-- from brain-module branch (after merge)
-├── Skin_Module/           # Laravel frontend  <-- from skin-module branch (after merge)
-├── Resource/
-│   ├── System Design/              # System Design Diagrams
-│   ├── Research/                   # Skill mapping, difficulty analysis
-│   └── ER Digram/                  # ER Digram of Entity
-│   ├── System Documentation/       # System Documentation
-│   ├── Road Map/                   # Estimated Planning to complete this project               
-│   ├── SRS/                        # Vortexify SRS
-├── README.md                       # Read me
-├── LICENSE.md                      # LICENSE
-├── ChatGPT_Approved_Preparation.md # Flex 😅
-├── Vortexify_Branching.md          #contains Branching strategy
 ## 🧰 Technologies Used
 
 - **Frontend (Skin)**: `Laravel`, `Blade`, `Bootstrap`, `HTML`, `CSS`, `JS`
