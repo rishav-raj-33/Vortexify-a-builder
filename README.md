@@ -158,7 +158,6 @@ See full system architecture and SRS with Other Info at Resouce Directory*
 | Name           | Module            |
 |----------------|-------------------|
 | Rishav Raj (🔥)| Heart,Brain,Skin |
-| Swayam (🔥)    | Heart            |
 | Your Future 👥 | Open for collab  |
 
 ---
